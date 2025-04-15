@@ -117,7 +117,7 @@ fn ler_dados_pib_de_json(caminho_arquivo: &str) -> Result<Vec<RegistroPib>, Box<
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let caminho_arquivo = "src/pib_brasil.json";
+    let caminho_arquivo = "pib_brasil.json";
 
     let dados_pib_result = ler_dados_pib_de_json(caminho_arquivo);
 
@@ -153,38 +153,54 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 mod tests {
     use super::*;
 
-    #[test]
-    fn test_calcular_media() {
-        let valores = vec![1.0, 2.0, 3.0, 4.0, 5.0];
-        let resultado = calcular_media(&valores);
-        assert_eq!(resultado, 3.0);
-    }
+ 
+
 
     #[test]
-    fn test_calcular_media_iguais() {
-        let valores = vec![9.0, 9.0, 9.0, 9.0, 9.0];
-        let resultado = calcular_media(&valores);
-        assert_eq!(resultado, 9.0);
+    fn test_regressao_linear_simples_metrica() {
+        let dados = vec![
+            RegistroPib { ano: 1.0, valor: 3.0 },
+            RegistroPib { ano: 2.0, valor: 5.0 },
+            RegistroPib { ano: 3.0, valor: 7.0 },
+            RegistroPib { ano: 4.0, valor: 9.0 },
+            RegistroPib { ano: 5.0, valor: 11.0 },
+    ];
+
+        let inclinacao = calcular_inclinacao_pib(&dados);
+        let intercepto = calcular_intercepto_pib(&dados, inclinacao);
+        let r_quadrado = calcular_r_quadrado_pib(&dados, intercepto, inclinacao);
+        let mse = calcular_erro_quadratico_medio_pib(&dados, intercepto, inclinacao);
+
+        assert!((inclinacao - 2.0).abs() < 1e-6, "Inclinação incorreta");
+        assert!((intercepto - 1.0).abs() < 1e-6, "Intercepto incorreto");
+        assert!((r_quadrado - 1.0).abs() < 1e-6, "R² deveria ser 1.0");
+        assert!((mse).abs() < 1e-6, "MSE deveria ser 0");
     }
 
-    #[test]
-    fn test_calcular_media_unico_valor() {
-        let valores = vec![5.0];
-        let resultado = calcular_media(&valores);
-        assert_eq!(resultado, 5.0);
-    }
+
+
+}
 
     #[test]
-    fn test_calcular_media_negativos() {
-        let valores = vec![-2.0, -4.0, -6.0];
-        let resultado = calcular_media(&valores);
-        assert_eq!(resultado, -4.0);
-    }
+    fn test_regressao_e_previsao() {
+        let dados = vec![
+            RegistroPib { ano: 2000.0, valor: 10000.0 },
+            RegistroPib { ano: 2005.0, valor: 15000.0 },
+            RegistroPib { ano: 2010.0, valor: 20000.0 },
+            RegistroPib { ano: 2015.0, valor: 25000.0 },
+            RegistroPib { ano: 2020.0, valor: 30000.0 },
+        ];
 
-    #[test]
-    fn test_calcular_media_negativos_positivos() {
-        let valores = vec![-2.0, 4.0];
-        let resultado = calcular_media(&valores);
-        assert_eq!(resultado, 1.0);
-    }
+        let inclinacao = calcular_inclinacao_pib(&dados);
+        let intercepto = calcular_intercepto_pib(&dados, inclinacao);
+
+        let ano_previsto = 2025.0;
+        let resultado = prever_pib(intercepto, inclinacao, ano_previsto);
+
+        let esperado = 35000.0;
+
+        assert!(
+            (resultado - esperado).abs() < 1e-6,
+            "Esperado {}, mas obteve {}", esperado, resultado
+        );
 }
