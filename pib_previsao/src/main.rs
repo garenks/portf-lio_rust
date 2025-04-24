@@ -128,7 +128,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 println!("Ano: {}, PIB: {:.2}", registro.ano, registro.valor);
             }
 
-            println!("\nAnalisando a tendência do PIB per capita:");
+            println!("Analisando a tendência do PIB per capita do Brasil:");
             let inclinacao = calcular_inclinacao_pib(&dados_pib);
             let intercepto = calcular_intercepto_pib(&dados_pib, inclinacao);
             let previsao_2030 = prever_pib(intercepto, inclinacao, 2030.0);
