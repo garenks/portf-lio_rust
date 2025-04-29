@@ -21,11 +21,6 @@ A aplicação carrega dados de um arquivo `.json` contendo o PIB per capita por 
 
 ---
 
-## 📁 Estrutura do Projeto
-
-
----
-
 ## 📈 Funcionalidades Principais
 
 ### `calcular_media(valores: &[f64]) -> f64`
