@@ -1,0 +1,7 @@
+[package]
+name = "estudo_de_caso"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+unicode-normalization = "0.1"

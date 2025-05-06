@@ -177,10 +177,7 @@ mod tests {
         assert!((mse).abs() < 1e-6, "MSE deveria ser 0");
     }
 
-
-
 }
-
     #[test]
     fn test_regressao_e_previsao() {
         let dados = vec![
