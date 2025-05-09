@@ -1,28 +1,16 @@
 use unicode_normalization::UnicodeNormalization;
-
-use std::collections::HashMap;
-
-use std::io::{self, Write};
-
 use std::time::Instant;
-
-
-
-
+use std::collections::HashMap;
+use std::io::{self, Write};
 
 #[derive(Debug)]
 
 struct Product {
-
     id: u32,
-
     name: String,
-
     category: String,
 
 }
-
-
 
 fn preprocess(text: &str) -> String {
     text.nfkd() 
@@ -31,25 +19,16 @@ fn preprocess(text: &str) -> String {
         .to_lowercase()
 }
 
-
-
 fn main() {
-
     let mut product_table: HashMap<u32, Product> = HashMap::new();
-
-
-
     product_table.insert(
-
         1000,
-
         Product {
             id: 1000,
             name: "Notebook Acer".to_string(),
             category: "Eletrônicos".to_string(),
         },
     );
-
     product_table.insert(
         1015,
         Product {
